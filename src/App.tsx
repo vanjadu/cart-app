@@ -1,26 +1,32 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { QueryClient, QueryClientProvider } from 'react-query'
+import { CartProvider } from 'react-use-cart'
+import Navbar from './components/Navbar'
+import CartPage from './pages/CartPage'
+import HomePage from './pages/HomePage'
+import SinglePage from './pages/SinglePage'
+import CheckoutPage from './pages/CheckoutPage'
+
+const queryClient = new QueryClient()
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='App'>
+      <QueryClientProvider client={queryClient}>
+        <CartProvider>
+          <Router>
+            <Navbar />
+            <Routes>
+              <Route path='/' element={<HomePage />} />
+              <Route path='/items/:id' element={<SinglePage />} />
+              <Route path='/cart' element={<CartPage />} />
+              <Route path='/checkout' element={<CheckoutPage />} />
+            </Routes>
+          </Router>
+        </CartProvider>
+      </QueryClientProvider>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
